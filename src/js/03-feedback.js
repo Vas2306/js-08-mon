@@ -13,7 +13,10 @@ refs.form.addEventListener('submit', onSubmitForm);
 
 dataFromLocalStorage();
 
-const formData = {};
+const formData = {
+    "email":'',
+    "message":''
+   };
 
 function onFormData(evt) {
     formData[evt.target.name] = evt.target.value;
