@@ -19,7 +19,7 @@ function onFormData() {
 
 function onSubmitForm(evt) {
   evt.preventDefault();
-  console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)) || '');
+  console.log(JSON.parse(currentStorage) || '');
   form.elements.email.value = '';
   form.elements.message.value = '';
   localStorage.clear();
