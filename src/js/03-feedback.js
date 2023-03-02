@@ -19,11 +19,11 @@ function onFormData() {
 
 function onSubmitForm(evt) {
   evt.preventDefault();
-  console.log(JSON.parse(currentStorage) || '');
+  console.log(localStorage.getItem(STORAGE_KEY) || '');
   form.elements.email.value = '';
   form.elements.message.value = '';
   localStorage.clear();
-}
+} 
 
 function dataFromLocalStorage() {
   if (!JSON.parse(currentStorage)) {
