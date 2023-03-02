@@ -1,43 +1,36 @@
 import throttle from 'lodash.throttle';
 
-const STORAGE_KEY = "feedback-form-state";
-const refs = {
-form:document.querySelector('.feedback-form'),
-email:document.querySelector('.feedback-form input'),
-message:document.querySelector('.feedback-form textarea'), 
-}
+const form = document.querySelector('.feedback-form');
+const STORAGE_KEY = 'feedback-form-state';
+const currentStorage = localStorage.getItem(STORAGE_KEY);
 
-refs.form.addEventListener('input', throttle(onFormData, 500));
-// refs.form.addEventListener('input', onFormData);
-refs.form.addEventListener('submit', onSubmitForm);
+form.addEventListener('input', throttle(onFormData, 500));
+form.addEventListener('submit', onSubmitForm);
 
 dataFromLocalStorage();
 
-let formData = {
-    "email":'',
-    "message":''
-   };
-
-function onFormData(evt) {
-    formData[evt.target.name] = evt.target.value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+function onFormData() {
+  const formState = {
+    email: form.elements.email.value,
+    message: form.elements.message.value,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formState));
 }
 
 function onSubmitForm(evt) {
-  console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)));
   evt.preventDefault();
-  evt.currentTarget.reset();
-  localStorage.removeItem(STORAGE_KEY);
-  formData = {
-    "email":'',
-    "message":''
-   };
+  console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)) || '');
+  form.elements.email.value = '';
+  form.elements.message.value = '';
+  localStorage.clear();
 }
 
 function dataFromLocalStorage() {
-  const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if (data) {
-    refs.email.value = data.email;
-    refs.message.value = data.message;
+  if (!JSON.parse(currentStorage)) {
+    form.elements.message.value = '';
+    form.elements.email.value = '';
+    return;
   }
-};
+  form.elements.email.value = JSON.parse(currentStorage).email;
+  form.elements.message.value = JSON.parse(currentStorage).message;
+}
